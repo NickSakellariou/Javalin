@@ -1,1 +1,1 @@
-# Javalin project
+# Javalin
