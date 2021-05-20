@@ -26,7 +26,58 @@ public class UserController {
 	private UserController(){ }
 	
 	public static void search(Context ctx) {
-		String search = ctx.formParam("search");
+		String search = ctx.formParam("search").replace(' ', '.');
+		
+		ctx.redirect("/search-results/"+search);
+	 }
+	
+	public static void searchAdmin(Context ctx) {
+		String search = ctx.formParam("search").replace(' ', '.');
+		
+		ctx.redirect("/search-results-admin/"+search);
+	 }
+	 
+	 public static void getSearchResultsBooks(Context ctx) throws IOException{
+		 String search = ctx.pathParam("search").replace('.', ' ');
+		 
+		 ArrayList<book> books = new ArrayList<book>();
+		 
+		 Connection conn = null;
+			try {
+				
+				System.out.println("Connecting to database...");
+				conn = DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM books WHERE title LIKE '%"+search+"%'");
+				ResultSet rs1 = ps1.executeQuery();
+				
+				while(rs1.next())
+				{						
+					
+					InputStream input = rs1.getBinaryStream("image");
+					byte[] bytes = IOUtils.toByteArray(input);
+					 
+					String image = new String(Base64.getEncoder().encode(bytes));
+					
+					book book = new book(rs1.getInt("book_id"),rs1.getString("title"),rs1.getString("genre"),rs1.getFloat("price"),rs1.getString("author"),image,rs1.getString("publisher"),rs1.getLong("isbn"),rs1.getInt("pages"),rs1.getInt("year"),rs1.getInt("availability"),rs1.getString("language"),rs1.getString("description"));
+					
+					books.add(book);
+					
+				}
+				
+				ctx.json(books);
+				
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+	 }
+	
+	public static void addContactForm(Context ctx) {
+		String name = ctx.formParam("name");
+		String surname = ctx.formParam("surname");
+		String email = ctx.formParam("email");
+		String phone = ctx.formParam("phone");
+		String message = ctx.formParam("message");
 		
 		Connection conn = null;
 		try {
@@ -34,18 +85,32 @@ public class UserController {
 			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			
-			PreparedStatement prst1 = conn.prepareStatement("SELECT * FROM books WHERE title = '"+search+"'");
-			ResultSet resu1 = prst1.executeQuery();
+			int i = 1;
 			
-			if(resu1.next()) {
+			while(true) {
+				PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM contact WHERE contact_id  = '"+i+"'");
+				ResultSet res1 = pst1.executeQuery();
 				
-				ctx.redirect("/book-comments/"+resu1.getInt("book_id"));
-				
+				if(res1.next())	{
+					i++;
+					continue;
+				}
+				else {
+					PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (contact_id, name, surname, email, phone, message) VALUES (?, ?, ?, ?, ?, ?)");
+					ps.setInt(1, i);
+					ps.setString(2, name);
+					ps.setString(3, surname);
+					ps.setString(4, email);
+					ps.setString(5, phone);
+					ps.setString(6, message);
+					
+					ps.executeUpdate();
+					
+					ctx.redirect("/contact-success");
+					
+					break;
+				}
 			}
-			else {
-				ctx.redirect("/search-failure");
-			}
-			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -198,6 +263,40 @@ public class UserController {
 		ctx.removeCookie("username");
 		
 		ctx.redirect("/");
+	 }
+	
+	public static void getBestSellingBooks(Context ctx) throws IOException {
+		 
+		 ArrayList<book> books = new ArrayList<book>();
+		 
+		 Connection conn = null;
+			try {
+				
+				System.out.println("Connecting to database...");
+				conn = DriverManager.getConnection(DB_URL,USER,PASS);
+				
+				PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM books LIMIT 10");
+				ResultSet rs1 = ps1.executeQuery();
+				
+				while(rs1.next())
+				{						
+					
+					InputStream input = rs1.getBinaryStream("image");
+					byte[] bytes = IOUtils.toByteArray(input);
+					 
+					String image = new String(Base64.getEncoder().encode(bytes));
+					
+					book book = new book(rs1.getInt("book_id"),rs1.getString("title"),rs1.getString("genre"),rs1.getFloat("price"),rs1.getString("author"),image,rs1.getString("publisher"),rs1.getLong("isbn"),rs1.getInt("pages"),rs1.getInt("year"),rs1.getInt("availability"),rs1.getString("language"),rs1.getString("description"));
+					
+					books.add(book);
+					
+				}
+				
+				ctx.json(books);
+				
+			}catch (SQLException e) {
+				e.printStackTrace();
+	    } 
 	 }
 	
 	public static void genres(Context ctx) {
@@ -838,7 +937,7 @@ public class UserController {
 		
 		ArrayList<book> books = new ArrayList<book>();
 		 
-		 Connection conn = null;
+		Connection conn = null;
 			try {
 				
 				System.out.println("Connecting to database...");
@@ -1135,40 +1234,6 @@ public class UserController {
 		}catch (SQLException e) {
 				e.printStackTrace();
 			} 
-	 }
-	
-	public static void addComment(Context ctx) {
-		int book_id = Integer.parseInt(ctx.pathParam("book_id"));
-		String comment = ctx.formParam("comment");
-		int rating = Integer.parseInt(ctx.formParam("rating"));
-		String username = ctx.cookie("username");;
-		
-		Connection conn = null;
-		try {
-			
-			System.out.println("Connecting to database...");
-			conn = DriverManager.getConnection(DB_URL,USER,PASS);
-			
-			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM users WHERE username = '"+username+"'");
-			ResultSet rs1 = ps1.executeQuery();
-			if(rs1.next())
-			{	
-				
-				PreparedStatement ps = conn.prepareStatement("INSERT INTO comments (book_id, comment, rating, user_id) VALUES (?, ?, ?, ?)");
-				ps.setInt(1, book_id);
-				ps.setString(2, comment);
-				ps.setInt(3, rating);
-				ps.setInt(4, rs1.getInt("user_id"));
-				
-				ps.executeUpdate();
-				
-				ctx.redirect("/book-comments/"+book_id);
-				
-			}
-			
-		}catch (SQLException e) {
-			e.printStackTrace();
-    } 
 	 }
 	 
 	public static void getAllBooks(Context ctx) throws IOException {

@@ -1,4 +1,4 @@
-<template id="admin-book">
+<template id="search-results-admin">
 	<div>
 		<nav class="navbar navbar-expand-sm bg-info navbar-dark">
 		  <ul class="navbar-nav">
@@ -42,7 +42,7 @@
 		</nav>
 		<br>
 		<br>
-		<div class="adminBookRow4">
+		<div class="adminBookSearchRow4">
 			<div>
 				<form class="search" action="/search-admin" method="post">
 				  <input type="text" placeholder="Search.." name="search">
@@ -52,7 +52,7 @@
 		</div>
 		<br>
 		<br>
-		<div class="adminBookRow4">
+		<div class="adminBookSearchRow4">
 			<div>
 				<button class="btn btn-primary" @click="visible1 = !visible1">Add a book</button>
 				<br>
@@ -104,13 +104,13 @@
 		<br>
 		<br>
 		<br>
-		<div class="adminBookRow1">
+		<div class="adminBookSearchRow1">
 			<h1>All books</h1>
 		</div>
 		<br>
-		<div class="adminBookRow3">
+		<div class="adminBookSearchRow3">
 			<div v-for="book in books">
-				<div class="adminBookRow2">
+				<div class="adminBookSearchRow2">
 					<div>
 						<br>
 						<img :src="`data:image/jpeg;base64,${book.image}`"/>
@@ -143,6 +143,7 @@
 							<h4><b>Description : </b>{{book.description}}</h4>
 							<br>
 						</span>
+						<br>
 						<button class="btn btn-primary" @click="visible2 = !visible2">Modify</button>
 						<br>
 						<form v-if="visible2" :action="`/api/admin-modify-book/${book.book_id}`" method="POST" enctype="multipart/form-data">
@@ -214,20 +215,21 @@
 </template>
 
 <script>
-    Vue.component("admin-book", {
-    	template: "#admin-book",
-    	data: () => ({
-    		books: [],
-    		visible1: false,
-    		visible2: false,
-    		visible3: false,
-        }),
-        created() {
-            fetch("/api/all-books")
+	Vue.component("search-results-admin", {
+		template: "#search-results-admin",
+		data: () => ({
+			books: [],
+			visible1: false,
+			visible2: false,
+			visible3: false,
+	    }),
+	    created() {
+			const search = this.$javalin.pathParams["search"];
+            fetch(`/search-results-books/${search}`)
                 .then(res => res.json())
                 .then(res => this.books = res);
-        }
-    });
+	    }
+	});
 </script>
 
 <style>
@@ -244,7 +246,7 @@
 		top: 6px;
 	}
 	
-	.adminBookRow1{
+	.adminBookSearchRow1{
 		background-color: white;
 		color: black;
 		text-align: center;
@@ -254,7 +256,7 @@
 		box-shadow:1px 1px 1px white;
 	}
 	
-	.adminBookRow2{
+	.adminBookSearchRow2{
 		background-color: white;
 		padding: 20px;
 		margin: 15px;
@@ -262,24 +264,24 @@
 		text-align: center;
 	}
 	
-	.adminBookRow2 div{
+	.adminBookSearchRow2 div{
 		padding:8px;
 		border-style: solid;
 		flex:33%;
 	}
 	
-	.adminBookRow2 img{
+	.adminBookSearchRow2 img{
 		width: 250px;
 	}
 	
-	.adminBookRow3{
+	.adminBookSearchRow3{
 		margin:auto;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
 	}
 	
-	.adminBookRow4{
+	.adminBookSearchRow4{
 		background-color: white;
 		padding: 10px;
 		margin: auto;
@@ -287,7 +289,7 @@
 		text-align: center;
 	}
 	
-	.adminBookRow4 div{
+	.adminBookSearchRow4 div{
 		padding:8px;
 		border-style: solid;
 		flex:33%;

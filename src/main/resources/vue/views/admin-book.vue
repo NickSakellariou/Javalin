@@ -42,10 +42,21 @@
 		</nav>
 		<br>
 		<br>
-		<div class="adminBookRow2">
+		<div class="adminBookRow4">
 			<div>
-				<form action="/api/admin-add-book" method="POST" enctype="multipart/form-data">
-					<label for="title" ><b> ADD A BOOK </b></label>
+				<form class="search" action="/search-admin" method="post">
+				  <input type="text" placeholder="Search.." name="search">
+				  <button type="submit" style="font-size:1px"><i class="material-icons">search</i></button>
+				</form>
+			</div>
+		</div>
+		<br>
+		<br>
+		<div class="adminBookRow4">
+			<div>
+				<button class="btn btn-primary" @click="visible1 = !visible1">Add a book</button>
+				<br>
+				<form v-if="visible1" action="/api/admin-add-book" method="POST" enctype="multipart/form-data">
 					<br>
 					<br>
 					<input type="text" name="title" placeholder="Title of book" required>
@@ -97,87 +108,96 @@
 			<h1>All books</h1>
 		</div>
 		<br>
-		<div v-for="book in books">
-			<div class="adminBookRow2">
-				<div>
-					<br>
-					<img :src="`data:image/jpeg;base64,${book.image}`"/>
-					<br>
-					<br>
-					<h4><b>Title : </b>{{book.title}}</h4>
-					<br>
-					<h4><b>Genre : </b>{{book.genre}}</h4>
-					<br>
-					<h4><b>Price : </b>{{book.price}} €</h4>
-					<br>
-					<h4><b>Author : </b>{{book.author}}</h4>
-					<br>
-					<h4><b>Publisher : </b>{{book.publisher}}</h4>
-					<br>
-					<h4><b>ISBN : </b>{{book.isbn}}</h4>
-					<br>
-					<h4><b>Pages : </b>{{book.pages}}</h4>
-					<br>
-					<h4><b>Year published: </b>{{book.year}}</h4>
-					<br>
-					<h4><b>Availability : </b>{{book.availability}}</h4>
-					<br>
-					<h4><b>Language : </b>{{book.language}}</h4>
-					<br>
-					<h4><b>Description : </b>{{book.description}}</h4>
-					<br>
-					<form :action="`/api/admin-modify-book/${book.book_id}`" method="POST" enctype="multipart/form-data">
+		<div class="adminBookRow3">
+			<div v-for="book in books">
+				<div class="adminBookRow2">
+					<div>
 						<br>
-						<label for="title" ><b> MODIFY THE BOOK </b></label>
-						<br>
-						<input type="text" name="title" placeholder="New title of book" required>
+						<img :src="`data:image/jpeg;base64,${book.image}`"/>
 						<br>
 						<br>
-						<input type="text" name="genre" placeholder="New genre of book" required>
+						<h4><b>Title : </b>{{book.title}}</h4>
+						<br>
+						<h4><b>Genre : </b>{{book.genre}}</h4>
+						<br>
+						<h4><b>Price : </b>{{book.price}} €</h4>
+						<br>
+						<h4><b>Author : </b>{{book.author}}</h4>
+						<br>
+						<button class="btn btn-primary" @click="visible3 = !visible3">More information about the book</button>
+						<span v-if="visible3">
+							<br>
+							<br>
+							<h4><b>Publisher : </b>{{book.publisher}}</h4>
+							<br>
+							<h4><b>ISBN : </b>{{book.isbn}}</h4>
+							<br>
+							<h4><b>Pages : </b>{{book.pages}}</h4>
+							<br>
+							<h4><b>Year published: </b>{{book.year}}</h4>
+							<br>
+							<h4><b>Availability : </b>{{book.availability}}</h4>
+							<br>
+							<h4><b>Language : </b>{{book.language}}</h4>
+							<br>
+							<h4><b>Description : </b>{{book.description}}</h4>
+							<br>
+						</span>
+						<button class="btn btn-primary" @click="visible2 = !visible2">Modify</button>
+						<br>
+						<form v-if="visible2" :action="`/api/admin-modify-book/${book.book_id}`" method="POST" enctype="multipart/form-data">
+							<br>
+							<label for="title" ><b> MODIFY THE BOOK </b></label>
+							<br>
+							<input type="text" name="title" placeholder="New title of book" required>
+							<br>
+							<br>
+							<input type="text" name="genre" placeholder="New genre of book" required>
+							<br>
+							<br>
+							<input type="text" name="price" placeholder="New price of book" required>
+							<br>
+							<br>
+							<input type="text" name="author" placeholder="New author of book" required>
+							<br>
+							<br>
+							<input type="text" name="publisher" placeholder="New publisher of book" required>
+							<br>
+							<br>
+							<input type="text" name="isbn" pattern="[0-9]{13}" title="Must contain 13 numbers" placeholder="New ISBN of book" required>
+							<br>
+							<br>
+							<input type="text" name="pages" pattern="[0-9]{1,}" title="Must contain only numbers" placeholder="New pages of book" required>
+							<br>
+							<br>
+							<input type="text" name="year" pattern="[0-9]{1,}" title="Must contain only numbers" placeholder="New year of book" required>
+							<br>
+							<br>
+							<input type="text" name="availability" pattern="[0-9]{1,}" title="Must contain only numbers" placeholder="New availability of book" required>
+							<br>
+							<br>
+							<input type="text" name="language" placeholder="New language of book" required>
+							<br>
+							<br>
+							<input type="text" name="description" placeholder="New description of book" required>
+							<br>
+							<br>
+							<label for="image" ><b> Image </b></label>
+							<br>
+							<input type="file" name="image" required>
+							<br>
+							<br>
+							<input type="submit" class="btn btn-primary" value="Modify">
+						</form>
+						<br>
+						<a :href="`/api/admin-remove-book/${book.book_id}`" class="btn btn-danger">Remove book</a>
 						<br>
 						<br>
-						<input type="text" name="price" placeholder="New price of book" required>
-						<br>
-						<br>
-						<input type="text" name="author" placeholder="New author of book" required>
-						<br>
-						<br>
-						<input type="text" name="publisher" placeholder="New publisher of book" required>
-						<br>
-						<br>
-						<input type="text" name="isbn" pattern="[0-9]{13}" title="Must contain 13 numbers" placeholder="New ISBN of book" required>
-						<br>
-						<br>
-						<input type="text" name="pages" pattern="[0-9]{1,}" title="Must contain only numbers" placeholder="New pages of book" required>
-						<br>
-						<br>
-						<input type="text" name="year" pattern="[0-9]{1,}" title="Must contain only numbers" placeholder="New year of book" required>
-						<br>
-						<br>
-						<input type="text" name="availability" pattern="[0-9]{1,}" title="Must contain only numbers" placeholder="New availability of book" required>
-						<br>
-						<br>
-						<input type="text" name="language" placeholder="New language of book" required>
-						<br>
-						<br>
-						<input type="text" name="description" placeholder="New description of book" required>
-						<br>
-						<br>
-						<label for="image" ><b> Image </b></label>
-						<br>
-						<input type="file" name="image" required>
-						<br>
-						<br>
-						<input type="submit" class="btn btn-primary" value="Modify">
-					</form>
-					<br>
-					<a :href="`/api/admin-remove-book/${book.book_id}`" class="btn btn-danger">Remove book</a>
-					<br>
-					<br>
+					</div>
 				</div>
+				<br>
+				<br>
 			</div>
-			<br>
-			<br>
 		</div>
 		
 		<br>
@@ -198,6 +218,9 @@
     	template: "#admin-book",
     	data: () => ({
     		books: [],
+    		visible1: false,
+    		visible2: false,
+    		visible3: false,
         }),
         created() {
             fetch("/api/all-books")
@@ -234,8 +257,8 @@
 	.adminBookRow2{
 		background-color: white;
 		padding: 20px;
-		margin: auto;
-		width:700px;
+		margin: 15px;
+		width:600px;
 		text-align: center;
 	}
 	
@@ -247,6 +270,27 @@
 	
 	.adminBookRow2 img{
 		width: 250px;
+	}
+	
+	.adminBookRow3{
+		margin:auto;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	
+	.adminBookRow4{
+		background-color: white;
+		padding: 10px;
+		margin: auto;
+		width:600px;
+		text-align: center;
+	}
+	
+	.adminBookRow4 div{
+		padding:8px;
+		border-style: solid;
+		flex:33%;
 	}
 	
 	.footer{

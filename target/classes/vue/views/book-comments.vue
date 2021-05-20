@@ -62,46 +62,50 @@
 		<br>
 		<div v-for="book in books">
 			<div class="bookCommentsRow1">
-				<div>
+				<div style="display:flex;">
 					<br>
-					<img :src="`data:image/jpeg;base64,${book.image}`"/>
-					<br>
-					<br>
-					<h4><b>Title : </b>{{book.title}}</h4>
-					<br>
-					<h4><b>Genre : </b>{{book.genre}}</h4>
-					<br>
-					<h4><b>Price : </b>{{book.price}}</h4>
-					<br>
-					<h4><b>Author : </b>{{book.author}}</h4>
-					<br>
-					<h4><b>Publisher : </b>{{book.publisher}}</h4>
-					<br>
-					<h4><b>ISBN : </b>{{book.isbn}}</h4>
-					<br>
-					<h4><b>Pages : </b>{{book.pages}}</h4>
-					<br>
-					<h4><b>Year published: </b>{{book.year}}</h4>
-					<br>
-					<h4><b>Language : </b>{{book.language}}</h4>
-					<br>
-					<h4><b>Description : </b>{{book.description}}</h4>
-					<br>
-					<br>
-					<span v-if="book.availability > 0">
-						<form :action="`/add-to-cart/${book.book_id}`" method="POST">
-							<label for="quantity" > Quantity (between 1 and {{book.availability}}):</label>
-							<input type="number" name="quantity"  min="1":max="book.availability" required>
-							<br>
-							<br>
-							<input type="submit" class="btn btn-primary" value="Add to cart" >
-						</form>
-					</span>
-					<span v-if="book.availability == 0">
-						<h4>This book is unavailable to purchase for the moment</h4>
+					<span class="bookCommentsImage">
+						<img :src="`data:image/jpeg;base64,${book.image}`"/>
 					</span>
 					<br>
 					<br>
+					<br>
+					<br>
+					<span class="bookCommentsInformation">
+						<h1></b>{{book.title}}</h1>
+						<hr>
+						<h4><b>Genre : </b>{{book.genre}}</h4>
+						<br>
+						<h4><b>Price : </b>{{book.price}}</h4>
+						<br>
+						<h4><b>Author : </b>{{book.author}}</h4>
+						<br>
+						<h4><b>Publisher : </b>{{book.publisher}}</h4>
+						<br>
+						<h4><b>ISBN : </b>{{book.isbn}}</h4>
+						<br>
+						<h4><b>Pages : </b>{{book.pages}}</h4>
+						<br>
+						<h4><b>Year published: </b>{{book.year}}</h4>
+						<br>
+						<h4><b>Language : </b>{{book.language}}</h4>
+						<br>
+						<h4><b>Description : </b>{{book.description}}</h4>
+						<br>
+						<br>
+						<span v-if="book.availability > 0">
+							<form style="text-align:center;" :action="`/add-to-cart/${book.book_id}`" method="POST">
+								<label for="quantity" > Quantity (between 1 and {{book.availability}}):</label>
+								<input type="number" name="quantity"  min="1":max="book.availability" required>
+								<br>
+								<br>
+								<input type="submit" class="btn btn-primary" value="Add to cart" >
+							</form>
+						</span>
+						<span v-if="book.availability == 0">
+							<h4>This book is unavailable to purchase for the moment</h4>
+						</span>
+					</span>
 				</div>
 			</div>
 			<br>
@@ -265,6 +269,10 @@
 </script>
 
 <style>
+	hr {
+	  border: 1px solid #f1f1f1;
+	  margin-bottom: 20px;
+	}
 	.bookCommentsRow{
 		background-color: white;
 		color: black;
@@ -278,8 +286,8 @@
 		background-color: white;
 		padding: 20px;
 		margin: auto;
-		width:700px;
-		text-align: center;
+		width:980px;
+		text-align: left;
 	}
 	
 	.bookCommentsRow1 div{
@@ -289,7 +297,15 @@
 	}
 	
 	.bookCommentsRow1 img{
-		width: 250px;
+		width: 320px;
+	}
+	
+	.bookCommentsImage{
+		margin: 20px;
+	}
+	
+	.bookCommentsInformation{
+		margin: 30px;
 	}
 	
 	.bookCommentsRow2{

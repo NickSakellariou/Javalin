@@ -64,11 +64,12 @@
 		</div>
 		<br>
 		<br>
-		<div v-for="author in authors" class="authorsMainrow">
-			<hr class="authors_hr">
-			<a :href="`/authors/${author.name}`"><h2><b>{{author.name}}</b></h2></a>
-			<br>
-			<br>
+		<div class="authorsMainrow1">
+			<div v-for="author in authors" class="authorsMainrow">
+				<br>
+				<a :href="`/authors/${author.name}`"><h2><b>{{author.name}}</b></h2></a>
+				<br>
+			</div>
 		</div>
 		
 		<br>
@@ -105,24 +106,6 @@
 </script>
 
 <style>
-	hr.authors_hr {
-	 	height: 30px;
-	    border-style: solid;
-	    border-color: black;
-	    border-width: 1px 0 0 0;
-	    border-radius: 20px;
-	}
-	hr.authors_hr:after {
-		display: block;
-	    content: "";
-	    height: 30px;
-	    margin-top: -31px;
-	    border-style: solid;
-	    border-color: black;
-	    border-width: 0 0 1px 0;
-	    border-radius: 20px;
-	}
-	
 	.authorsRow{
 		background-color: white;
 		color: black;
@@ -138,12 +121,18 @@
 		color: black;
 		text-align: center;
 		width:280px;
-		margin: auto;
+		margin: 20px;
 		border-radius:25px;
 		box-shadow:1px 1px 1px white;
 	}
 	.authorsMainrow a{
 		color:black;	
+	}
+	
+	.authorsMainrow1{
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
 	}
 	
 	.footer{

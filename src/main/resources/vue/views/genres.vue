@@ -64,11 +64,14 @@
 		</div>
 		<br>
 		<br>
-		<div v-for="genre in genres" class="genresMainrow">
-			<hr class="genres_hr">
-			<a :href="`/genres/${genre.name}`"><h2><b>{{genre.name}}</b></h2></a>
-			<br>
-			<br>
+		<div class="genresMainrow1">
+			<div v-for="genre in genres" class="genresMainrow">
+				<br>
+				<br>
+				<a :href="`/genres/${genre.name}`"><h2><b>{{genre.name}}</b></h2></a>
+				<br>
+				<br>
+			</div>
 		</div>
 		
 		<br>
@@ -105,24 +108,6 @@
 </script>
 
 <style>
-	hr.genres_hr {
-	 	height: 30px;
-	    border-style: solid;
-	    border-color: black;
-	    border-width: 1px 0 0 0;
-	    border-radius: 20px;
-	}
-	hr.genres_hr:after {
-		display: block;
-	    content: "";
-	    height: 30px;
-	    margin-top: -31px;
-	    border-style: solid;
-	    border-color: black;
-	    border-width: 0 0 1px 0;
-	    border-radius: 20px;
-	}
-	
 	.genresRow{
 		background-color: white;
 		color: black;
@@ -138,12 +123,18 @@
 		color: black;
 		text-align: center;
 		width:280px;
-		margin: auto;
+		margin: 20px;
 		border-radius:25px;
 		box-shadow:1px 1px 1px white;
 	}
 	.genresMainrow a{
 		color:black;	
+	}
+	
+	.genresMainrow1{
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
 	}
 	
 	.footer{

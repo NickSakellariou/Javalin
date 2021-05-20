@@ -82,10 +82,6 @@
 				<h4><b>Will the ratings that i give to books, affect the book suggestions i see in home page?</b></h4>
 				<h4>Yes, the store uses the collaborative filtering that is a method of making automatic predictions (filtering) about the interests of a user by collecting preferences or taste information from many users (collaborating).</h4>
 				<br>
-				<h4><b>5)</b></h4>
-				<h4><b>Is there a retail shop that i can find you?</b></h4>
-				<h4>No, the store is still completely digital.</h4>
-				<br>
 			</div>
 		</div>
 		

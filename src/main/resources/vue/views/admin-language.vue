@@ -42,7 +42,7 @@
 		</nav>
 		<br>
 		<br>
-		<div class="adminLanguageRow2">
+		<div class="adminLanguageRow4">
 			<div>
 				<form action="/api/admin-add-language" method="POST">
 					<label for="name" ><b> ADD A LANGUAGE </b></label>
@@ -61,29 +61,31 @@
 			<h1>All languages</h1>
 		</div>
 		<br>
-		<div v-for="language in languages">
-			<div class="adminLanguageRow2">
-				<div>
-					<br>
-					<h4><b>Language : </b>{{language.name}}</h4>
-					<br>
-					<form :action="`/api/admin-modify-language/${language.language_id}`" method="POST">
+		<div class="adminLanguageRow3">
+			<div v-for="language in languages">
+				<div class="adminLanguageRow2">
+					<div>
 						<br>
-						<label for="name" ><b> MODIFY THE LANGUAGE </b></label>
+						<h4><b>Language : </b>{{language.name}}</h4>
 						<br>
-						<input type="text" name="name" placeholder="New name of language" required>
+						<form :action="`/api/admin-modify-language/${language.language_id}`" method="POST">
+							<br>
+							<label for="name" ><b> MODIFY THE LANGUAGE </b></label>
+							<br>
+							<input type="text" name="name" placeholder="New name of language" required>
+							<br>
+							<br>
+							<input type="submit" class="btn btn-primary" value="Modify">
+						</form>
+						<br>
+						<a :href="`/api/admin-remove-language/${language.name}`" class="btn btn-danger">Remove language</a>
 						<br>
 						<br>
-						<input type="submit" class="btn btn-primary" value="Modify">
-					</form>
-					<br>
-					<a :href="`/api/admin-remove-language/${language.name}`" class="btn btn-danger">Remove language</a>
-					<br>
-					<br>
+					</div>
 				</div>
+				<br>
+				<br>
 			</div>
-			<br>
-			<br>
 		</div>
 		
 		<br>
@@ -139,13 +141,34 @@
 	
 	.adminLanguageRow2{
 		background-color: white;
-		padding: 20px;
-		margin: auto;
-		width:900px;
+		padding: 10px;
+		margin: 10px;
+		width:600px;
 		text-align: center;
 	}
 	
 	.adminLanguageRow2 div{
+		padding:8px;
+		border-style: solid;
+		flex:33%;
+	}
+	
+	.adminLanguageRow3{
+		margin:auto;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	
+	.adminLanguageRow4{
+		background-color: white;
+		padding: 10px;
+		margin: auto;
+		width:600px;
+		text-align: center;
+	}
+	
+	.adminLanguageRow4 div{
 		padding:8px;
 		border-style: solid;
 		flex:33%;

@@ -63,25 +63,67 @@
 			<h1>Sort books by</h1>
 		</div>
 		<br>
-		<br>
-		<div class="booksRow2">
-			<a href="/genres">
-				<h2>Genre</h2>
-			</a>
+		<div class="booksRow3">
+			<div class="booksRow2">
+				<a href="/genres">
+					<h1>Genre</h1>
+				</a>
+			</div>
+			<br>
+			<br>
+			<div class="booksRow2">
+				<a href="/authors">
+					<h1>Author</h1>
+				</a>
+			</div>
+			<br>
+			<br>
+			<div class="booksRow2">
+				<a href="/languages">
+					<h1>Language</h1>
+				</a>
+			</div>
 		</div>
 		<br>
 		<br>
-		<div class="booksRow2">
-			<a href="/authors">
-				<h2>Author</h2>
-			</a>
+		<br>
+		<div class="booksRow4">
+			<h1>Best selling books</h1>
 		</div>
 		<br>
 		<br>
-		<div class="booksRow2">
-			<a href="/languages">
-				<h2>Language</h2>
-			</a>
+		<div class="booksRow6">
+			<div v-for="book in books">
+				<div class="booksRow5">
+					<div>
+						<br>
+						<a :href="`/book-comments/${book.book_id}`"><img :src="`data:image/jpeg;base64,${book.image}`"/></a>
+						<br>
+						<br>
+						<h4><b>Title : </b>{{book.title}}</h4>
+						<br>
+						<h4><b>Price : </b>{{book.price}} €</h4>
+						<br>
+						<h4><b>Author : </b>{{book.author}}</h4>
+						<br>
+						<br>
+						<span v-if="book.availability > 0">
+							<form :action="`/add-to-cart/${book.book_id}`" method="POST">
+								<label for="quantity" > Quantity (between 1 and {{book.availability}}):</label>
+								<input type="number" name="quantity"  min="1":max="book.availability" required>
+								<br>
+								<br>
+								<input type="submit" class="btn btn-primary" value="Add to cart" >
+							</form>
+						</span>
+						<span v-if="book.availability == 0">
+							<h4>This book is unavailable to purchase for the moment</h4>
+						</span>
+					</div>
+				</div>
+				<br>
+				<br>
+			</div>
 		</div>
 		<br>
 		<br>
@@ -99,11 +141,15 @@
     	template: "#books",
     	data: () => ({
     		usernames: [],
+    		books: [],
         }),
         created() {
             fetch("/api/username")
                 .then(res => res.json())
-                .then(res => this.usernames = res);
+                .then(res => this.usernames = res)
+            fetch("/api/best-selling-books")
+	            .then(res => res.json())
+	            .then(res => this.books = res);
         }
     });
 </script>
@@ -123,8 +169,8 @@
 		background-color: white;
 		color: black;
 		text-align: center;
-		width:170px;
-		margin: auto;
+		width:180px;
+		margin: 25px;
 		border-radius:25px;
 		box-shadow:1px 1px 1px white;
 	}
@@ -133,14 +179,53 @@
 		color:black;	
 	}
 	
+	.booksRow3{
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	
+	.booksRow4{
+		background-color: white;
+		color: black;
+		text-align: center;
+		width:350px;
+		margin: auto;
+		border-radius:25px;
+		box-shadow:1px 1px 1px white;
+	}
+	
+	.booksRow5{
+		background-color: white;
+		padding: 20px;
+		margin: 15px;
+		width:600px;
+		text-align: center;
+	}
+	
+	.booksRow5 div{
+		padding:8px;
+		border-style: solid;
+		flex:33%;
+	}
+	
+	.booksRow5 img{
+		width: 200px;
+		height:330px;
+	}
+	
+	.booksRow6{
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	
 	.booksFooter{
-		position: fixed;
-		left: 0;
-		bottom: 0;
-		width: 100%;
+		position:relative;
+		top:250px;
 		background-color: black;
 		padding: 30px;
-		color: white;
 		text-align: center;
+		color:white;
 	}
 </style>

@@ -42,7 +42,7 @@
 		</nav>
 		<br>
 		<br>
-		<div class="adminAuthorRow2">
+		<div class="adminAuthorRow4">
 			<div>
 				<form action="/api/admin-add-author" method="POST">
 					<label for="name" ><b> ADD AN AUTHOR </b></label>
@@ -61,29 +61,31 @@
 			<h1>All authors</h1>
 		</div>
 		<br>
-		<div v-for="author in authors">
-			<div class="adminAuthorRow2">
-				<div>
-					<br>
-					<h4><b>Author : </b>{{author.name}}</h4>
-					<br>
-					<form :action="`/api/admin-modify-author/${author.author_id}`" method="POST">
+		<div class="adminAuthorRow3">
+			<div v-for="author in authors">
+				<div class="adminAuthorRow2">
+					<div>
 						<br>
-						<label for="name" ><b> MODIFY THE AUTHOR </b></label>
+						<h4><b>Author : </b>{{author.name}}</h4>
 						<br>
-						<input type="text" name="name" placeholder="New name of author" required>
+						<form :action="`/api/admin-modify-author/${author.author_id}`" method="POST">
+							<br>
+							<label for="name" ><b> MODIFY THE AUTHOR </b></label>
+							<br>
+							<input type="text" name="name" placeholder="New name of author" required>
+							<br>
+							<br>
+							<input type="submit" class="btn btn-primary" value="Modify">
+						</form>
+						<br>
+						<a :href="`/api/admin-remove-author/${author.name}`" class="btn btn-danger">Remove author</a>
 						<br>
 						<br>
-						<input type="submit" class="btn btn-primary" value="Modify">
-					</form>
-					<br>
-					<a :href="`/api/admin-remove-author/${author.name}`" class="btn btn-danger">Remove author</a>
-					<br>
-					<br>
+					</div>
 				</div>
+				<br>
+				<br>
 			</div>
-			<br>
-			<br>
 		</div>
 		
 		<br>
@@ -139,13 +141,34 @@
 	
 	.adminAuthorRow2{
 		background-color: white;
-		padding: 20px;
-		margin: auto;
-		width:900px;
+		padding: 10px;
+		margin: 10px;
+		width:600px;
 		text-align: center;
 	}
 	
 	.adminAuthorRow2 div{
+		padding:8px;
+		border-style: solid;
+		flex:33%;
+	}
+	
+	.adminAuthorRow3{
+		margin:auto;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	
+	.adminAuthorRow4{
+		background-color: white;
+		padding: 10px;
+		margin: auto;
+		width:600px;
+		text-align: center;
+	}
+	
+	.adminAuthorRow4 div{
 		padding:8px;
 		border-style: solid;
 		flex:33%;

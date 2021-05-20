@@ -64,11 +64,14 @@
 		</div>
 		<br>
 		<br>
-		<div v-for="language in languages" class="languagesMainrow">
-			<hr class="languages_hr">
-			<a :href="`/languages/${language.name}`"><h2><b>{{language.name}}</b></h2></a>
-			<br>
-			<br>
+		<div class="languagesMainrow1">
+			<div v-for="language in languages" class="languagesMainrow">
+				<br>
+				<br>
+				<a :href="`/languages/${language.name}`"><h2><b>{{language.name}}</b></h2></a>
+				<br>
+				<br>
+			</div>
 		</div>
 		
 		<br>
@@ -105,24 +108,6 @@
 </script>
 
 <style>
-	hr.languages_hr {
-	 	height: 30px;
-	    border-style: solid;
-	    border-color: black;
-	    border-width: 1px 0 0 0;
-	    border-radius: 20px;
-	}
-	hr.languages_hr:after {
-		display: block;
-	    content: "";
-	    height: 30px;
-	    margin-top: -31px;
-	    border-style: solid;
-	    border-color: black;
-	    border-width: 0 0 1px 0;
-	    border-radius: 20px;
-	}
-	
 	.languagesRow{
 		background-color: white;
 		color: black;
@@ -138,12 +123,18 @@
 		color: black;
 		text-align: center;
 		width:280px;
-		margin: auto;
+		margin: 20px;
 		border-radius:25px;
 		box-shadow:1px 1px 1px white;
 	}
 	.languagesMainrow a{
 		color:black;	
+	}
+	
+	.languagesMainrow1{
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
 	}
 	
 	.footer{

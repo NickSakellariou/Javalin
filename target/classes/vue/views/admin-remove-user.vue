@@ -44,22 +44,23 @@
 		<div class="adminUsersRow">
 			<h1>All users</h1>
 		</div>
-		<br>
-		<div v-for="user in users">
-			<div class="adminUsersMainrow">
-				<h4><b>Name : </b> {{user.name}}</h4>
-				<h4><b>Surname : </b> {{user.surname}}</h4>
-				<h4><b>E-mail : </b> {{user.email}}</h4>
-				<h4><b>Phone : </b> {{user.phone}}</h4>
-				<h4><b>Username : </b> {{user.username}}</h4>
+		<div class="adminUsersMainrow1">
+			<div v-for="user in users">
+				<div class="adminUsersMainrow">
+					<h4><b>Name : </b> {{user.name}}</h4>
+					<h4><b>Surname : </b> {{user.surname}}</h4>
+					<h4><b>E-mail : </b> {{user.email}}</h4>
+					<h4><b>Phone : </b> {{user.phone}}</h4>
+					<h4><b>Username : </b> {{user.username}}</h4>
+					<br>
+					
+					<form style="text-align:center;" :action="`/api/admin-remove-user/${user.username}`">
+						<input type="submit" class="btn btn-danger" value="Remove user">
+					</form>
+				</div>
 				<br>
-				
-				<form style="text-align:center;" :action="`/api/admin-remove-user/${user.username}`">
-					<input type="submit" class="btn btn-danger" value="Remove user">
-				</form>
+				<br>
 			</div>
-			<br>
-			<br>
 		</div>
 		
 		<br>
@@ -117,13 +118,20 @@
 	.adminUsersMainrow{
 		padding: 16px;
 		color:black;
-		margin: auto;
+		margin: 15px;
 		width:580px;
 		background-color: #006699;
 		border-radius:25px;
 		box-shadow:0px 3px 12px white;
 		position:relative;
 		top:25px;
+	}
+	
+	.adminUsersMainrow1{
+		margin:auto;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
 	}
 	
 	.footer{

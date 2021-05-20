@@ -59,17 +59,22 @@
 		</div>
 		</nav>
 		<br>
-		<br>
 		<div class="homePageRow">
-			<h1>Welcome to BookTime!</h1>
-			<h4>We believe that bookstores are essential to a healthy culture. They’re where authors can connect with readers, where we discover new writers, where children get hooked on the thrill of reading that can last a lifetime. They’re also anchors for our downtowns and communities.</h4>
-			<h4>As more and more people buy their books online, we wanted to create an easy, convenient way for you to get your books.</h4>
+			<h1><b>Welcome to BookTime!</b></h1>
+			<h4>Now your favourite bookstores can help you buy any book you want easily and quickly with our new website!</h4>
+			<h4>Nonetheless, you can still find us at these addresses :</h4>
+			<h4><b>Kalumnou 105, Athens</b></h4>
+			<h4><b>Aristotelous 82, Thessaloniki</b></h4>
 		</div>
 		<br>
-		<br>
-		<br>
-		<br>
-		<br>
+		<div class="homePageImages">
+			<span >
+				<img src="http://localhost:7777/icons/homePage1.jpg">
+			</span>
+			<span>
+				<img src="http://localhost:7777/icons/homePage2.jpg">
+			</span>		
+		</div>
 		<br>
 		<br>
 		<br>
@@ -81,23 +86,36 @@
 			</div>
 		</div>
 		<br>
-		<br>
-		<br>
-		<div class="homePageRow2">
-			<div v-for="book in books" class="homePageRow3">
-				<div class="homePageRow4">
-					<a :href="`/book-comments/${book.book_id}`"><img :src="`data:image/jpeg;base64,${book.image}`"/></a>
-					<br>
-					<br>
-					<h4><b>Title : </b>{{book.title}}</h4>
-					<br>
-					<h4><b>Genre : </b>{{book.genre}}</h4>
-					<br>
-					<h4><b>Price : </b>{{book.price}} €</h4>
-					<br>
-					<h4><b>Author : </b>{{book.author}}</h4>
-					<br>
-					<h4><b>Language : </b>{{book.language}}</h4>
+		<div class="homePageRow3">
+			<div v-for="book in books">
+				<div class="homePageRow2">
+					<div>
+						<a :href="`/book-comments/${book.book_id}`"><img :src="`data:image/jpeg;base64,${book.image}`"/></a>
+						<br>
+						<br>
+						<h4><b>Title : </b>{{book.title}}</h4>
+						<br>
+						<h4><b>Genre : </b>{{book.genre}}</h4>
+						<br>
+						<h4><b>Price : </b>{{book.price}} €</h4>
+						<br>
+						<h4><b>Author : </b>{{book.author}}</h4>
+						<br>
+						<h4><b>Language : </b>{{book.language}}</h4>
+						<br>
+						<span v-if="book.availability > 0">
+							<form :action="`/add-to-cart/${book.book_id}`" method="POST">
+								<label for="quantity" > Quantity (between 1 and {{book.availability}}):</label>
+								<input type="number" name="quantity"  min="1":max="book.availability" required>
+								<br>
+								<br>
+								<input type="submit" class="btn btn-primary" value="Add to cart" >
+							</form>
+						</span>
+						<span v-if="book.availability == 0">
+							<h4>This book is unavailable to purchase for the moment</h4>
+						</span>
+					</div>
 				</div>
 			</div>
 			<br>
@@ -125,7 +143,7 @@
             fetch("/api/username")
                 .then(res => res.json())
                 .then(res => this.usernames = res)
-            fetch("/matrix-factorization")
+            fetch("/suggestions")
                 .then(res => res.json())
                 .then(res => this.books = res);
         }
@@ -147,6 +165,22 @@
 		border-radius:25px;
 		box-shadow:0px 3px 12px white;
 	}
+	
+	.homePageimages{
+		width:950px;
+		padding: 20px;
+		text-align: center;
+		margin: auto;
+		display:flex;
+		flex:33%;
+	}
+	
+	.homePageimages img{
+		width: 450px;
+		height: 275px;
+		margin:10px;
+	}
+	
 	.homePageRow1{
 		background-color: white;
 		color: black;
@@ -157,10 +191,17 @@
 		box-shadow:1px 1px 1px white;
 	}
 	.homePageRow2{
-		display:flex;
+		background-color: white;
 		padding: 20px;
-		margin: auto;
+		margin: 15px;
+		width:600px;
 		text-align: center;
+	}
+	
+	.homePageRow2 div{
+		padding:8px;
+		border-style: solid;
+		flex:33%;
 	}
 	
 	.homePageRow2 img{
@@ -169,17 +210,9 @@
 	}
 	
 	.homePageRow3{
-		width:90%;
-		background-color: white;
-		position: relative;
-		margin: 10px;
-		padding:20px;
-	}
-	
-	.homePageRow4{
-		height:690px;
-		padding:8px;
-		border-style: solid;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
 	}
 	
 	.footer{

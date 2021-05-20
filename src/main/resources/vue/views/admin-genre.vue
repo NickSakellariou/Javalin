@@ -42,7 +42,7 @@
 		</nav>
 		<br>
 		<br>
-		<div class="adminGenreRow2">
+		<div class="adminGenreRow4">
 			<div>
 				<form action="/api/admin-add-genre" method="POST">
 					<label for="name" ><b> ADD A GENRE </b></label>
@@ -61,29 +61,31 @@
 			<h1>All genres</h1>
 		</div>
 		<br>
-		<div v-for="genre in genres">
-			<div class="adminGenreRow2">
-				<div>
-					<br>
-					<h4><b>Genre : </b>{{genre.name}}</h4>
-					<br>
-					<form :action="`/api/admin-modify-genre/${genre.genre_id}`" method="POST">
+		<div class="adminGenreRow3">
+			<div v-for="genre in genres">
+				<div class="adminGenreRow2">
+					<div>
 						<br>
-						<label for="name" ><b> MODIFY THE GENRE </b></label>
+						<h4><b>Genre : </b>{{genre.name}}</h4>
 						<br>
-						<input type="text" name="name" placeholder="New name of genre" required>
+						<form :action="`/api/admin-modify-genre/${genre.genre_id}`" method="POST">
+							<br>
+							<label for="name" ><b> MODIFY THE GENRE </b></label>
+							<br>
+							<input type="text" name="name" placeholder="New name of genre" required>
+							<br>
+							<br>
+							<input type="submit" class="btn btn-primary" value="Modify">
+						</form>
+						<br>
+						<a :href="`/api/admin-remove-genre/${genre.name}`" class="btn btn-danger">Remove genre</a>
 						<br>
 						<br>
-						<input type="submit" class="btn btn-primary" value="Modify">
-					</form>
-					<br>
-					<a :href="`/api/admin-remove-genre/${genre.name}`" class="btn btn-danger">Remove genre</a>
-					<br>
-					<br>
+					</div>
 				</div>
+				<br>
+				<br>
 			</div>
-			<br>
-			<br>
 		</div>
 		
 		<br>
@@ -139,13 +141,34 @@
 	
 	.adminGenreRow2{
 		background-color: white;
-		padding: 20px;
-		margin: auto;
-		width:900px;
+		padding: 10px;
+		margin: 10px;
+		width:500px;
 		text-align: center;
 	}
 	
 	.adminGenreRow2 div{
+		padding:8px;
+		border-style: solid;
+		flex:33%;
+	}
+	
+	.adminGenreRow3{
+		margin:auto;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	
+	.adminGenreRow4{
+		background-color: white;
+		padding: 10px;
+		margin: auto;
+		width:600px;
+		text-align: center;
+	}
+	
+	.adminGenreRow4 div{
 		padding:8px;
 		border-style: solid;
 		flex:33%;

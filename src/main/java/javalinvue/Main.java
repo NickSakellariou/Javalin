@@ -58,7 +58,7 @@ public class Main {
         
 		app.get("/", new VueComponent("<home-page></home-page>"));
 		
-		app.get("/matrix-factorization", ctx -> {
+		app.get("/suggestions", ctx -> {
 			if(ctx.cookie("username") != null)
 			{		
 				Connection conn = null;
@@ -71,14 +71,18 @@ public class Main {
 					
 					if(rs.next())
 					{	
-						PreparedStatement ps2 = conn.prepareStatement("SELECT * FROM comments WHERE user_id = '"+rs.getInt("user_id")+"'");
+						PreparedStatement ps2 = conn.prepareStatement("SELECT * FROM suggestions WHERE username = '"+ctx.cookie("username")+"'");
 		 				ResultSet rs2 = ps2.executeQuery();
 		 				
 		 				if(rs2.next())
 		 				{
 		 					
-		 					String username = ctx.cookie("username");
-		 					int[] result = runJdbcDatasetExample(spark,username);
+		 					int[] result = new int[5];
+		 				      result[0] = rs2.getInt("book_id1");
+		 				      result[1] = rs2.getInt("book_id2");
+		 				      result[2] = rs2.getInt("book_id3");
+		 				      result[3] = rs2.getInt("book_id4");
+		 				      result[4] = rs2.getInt("book_id5");
 		 					
 		 					ArrayList<book> books = new ArrayList<book>();
 		 					
@@ -116,11 +120,21 @@ public class Main {
 		
 		app.post("/search", UserController::search);
 		
-		app.get("/search-failure", new VueComponent("<search-failure></search-failure>"));
+		app.post("/search-admin", UserController::searchAdmin);
+		
+		app.get("/search-results/:search", new VueComponent("<search-results></search-results>"));
+		
+		app.get("/search-results-admin/:search", new VueComponent("<search-results-admin></search-results-admin>"));
+		
+		app.get("/search-results-books/:search", UserController::getSearchResultsBooks);
 		
 		app.get("/faq", new VueComponent("<faq></faq>"));
 		
 		app.get("/contact", new VueComponent("<contact></contact>"));
+		
+		app.post("/add-contact-form", UserController::addContactForm);
+		
+		app.get("/contact-success", new VueComponent("<contact-success></contact-success>"));
 		
 		app.get("/register", new VueComponent("<register></register>"));
 		
@@ -214,6 +228,8 @@ public class Main {
     	
     	app.get("/books", new VueComponent("<books></books>"));
     	
+    	app.get("/api/best-selling-books", UserController::getBestSellingBooks);
+    	
     	app.post("/add-to-cart/:book_id", UserController::addToCart);
     	
     	app.get("/cart", new VueComponent("<cart></cart>"));
@@ -240,7 +256,61 @@ public class Main {
     	
     	app.get("/api/book-comments-comment/:book_id", UserController::getAllComments);
     	
-    	app.post("/add-comment/:book_id", UserController::addComment);
+    	app.post("/add-comment/:book_id", ctx -> {
+    		int book_id = Integer.parseInt(ctx.pathParam("book_id"));
+    		String comment = ctx.formParam("comment");
+    		int rating = Integer.parseInt(ctx.formParam("rating"));
+    		String username = ctx.cookie("username");;
+    		
+    		Connection conn = null;
+    		try {
+    			
+    			System.out.println("Connecting to database...");
+    			conn = DriverManager.getConnection(DB_URL,USER,PASS);
+    			
+    			PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM users WHERE username = '"+username+"'");
+    			ResultSet rs1 = ps1.executeQuery();
+    			if(rs1.next())
+    			{	
+    				
+    				PreparedStatement ps = conn.prepareStatement("INSERT INTO comments (book_id, comment, rating, user_id) VALUES (?, ?, ?, ?)");
+    				ps.setInt(1, book_id);
+    				ps.setString(2, comment);
+    				ps.setInt(3, rating);
+    				ps.setInt(4, rs1.getInt("user_id"));
+    				
+    				ps.executeUpdate();
+    				
+    				
+    				PreparedStatement ps2 = conn.prepareStatement("SELECT * FROM suggestions WHERE username = '"+ctx.cookie("username")+"'");
+					ResultSet rs2 = ps2.executeQuery();
+					
+					if(rs2.next())
+					{	
+						PreparedStatement ps3 = conn.prepareStatement("DELETE FROM suggestions WHERE username = '"+ctx.cookie("username")+"'");
+						ps3.executeUpdate();
+					}
+    				
+					int[] result = runJdbcDatasetExample(spark,username);
+					
+					PreparedStatement ps4 = conn.prepareStatement("INSERT INTO suggestions (username, book_id1, book_id2, book_id3, book_id4, book_id5 ) VALUES (?, ?, ?, ?, ?, ?)");
+					ps4.setString(1, ctx.cookie("username"));
+					ps4.setInt(2, result[0]);
+					ps4.setInt(3, result[1]);
+					ps4.setInt(4, result[2]);
+					ps4.setInt(5, result[3]);
+					ps4.setInt(6, result[4]);
+					
+					ps4.executeUpdate();
+    				
+    				ctx.redirect("/book-comments/"+book_id);
+    				
+    			}
+    			
+    		}catch (SQLException e) {
+    			e.printStackTrace();
+    		} 
+    	});
     	
     	app.get("/api/remove-comment/:book_id", UserController::removeComment);
 	}

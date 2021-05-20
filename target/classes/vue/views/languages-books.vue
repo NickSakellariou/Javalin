@@ -61,8 +61,10 @@
 		<br>
 		<br>
 		<div v-if="books.length>0">
-			<div class="languagesBooksRow1">
-				<h1>All books</h1>
+			<div v-for="(book, key) in books" class="languagesBooksRow1">
+				<div v-if="key == books.length - 1">
+					<h1>{{book.language}} books</h1>
+				</div>
 			</div>
 		</div>
 		<br>
@@ -71,42 +73,44 @@
 				<h2>There are no books in this language yet</h2>
 			</div>
 		</div>
-		<div v-for="book in books">
-			<div class="languagesBooksRow2">
-				<div>
-					<br>
-					<a :href="`/book-comments/${book.book_id}`"><img :src="`data:image/jpeg;base64,${book.image}`"/></a>
-					<br>
-					<br>
-					<h4><b>Title : </b>{{book.title}}</h4>
-					<br>
-					<h4><b>Genre : </b>{{book.genre}}</h4>
-					<br>
-					<h4><b>Price : </b>{{book.price}} €</h4>
-					<br>
-					<h4><b>Author : </b>{{book.author}}</h4>
-					<br>
-					<h4><b>Language : </b>{{book.language}}</h4>
-					<br>
-					<br>
-					<span v-if="book.availability > 0">
-						<form :action="`/add-to-cart/${book.book_id}`" method="POST">
-							<label for="quantity" > Quantity (between 1 and {{book.availability}}):</label>
-							<input type="number" name="quantity"  min="1":max="book.availability" required>
-							<br>
-							<br>
-							<input type="submit" class="btn btn-primary" value="Add to cart" >
-						</form>
-					</span>
-					<span v-if="book.availability == 0">
-						<h4>This book is unavailable to purchase for the moment</h4>
-					</span>
-					<br>
-					<br>
+		<div class="languagesBooksRow3">
+			<div v-for="book in books">
+				<div class="languagesBooksRow2">
+					<div>
+						<br>
+						<a :href="`/book-comments/${book.book_id}`"><img :src="`data:image/jpeg;base64,${book.image}`"/></a>
+						<br>
+						<br>
+						<h4><b>Title : </b>{{book.title}}</h4>
+						<br>
+						<h4><b>Genre : </b>{{book.genre}}</h4>
+						<br>
+						<h4><b>Price : </b>{{book.price}} €</h4>
+						<br>
+						<h4><b>Author : </b>{{book.author}}</h4>
+						<br>
+						<h4><b>Language : </b>{{book.language}}</h4>
+						<br>
+						<br>
+						<span v-if="book.availability > 0">
+							<form :action="`/add-to-cart/${book.book_id}`" method="POST">
+								<label for="quantity" > Quantity (between 1 and {{book.availability}}):</label>
+								<input type="number" name="quantity"  min="1":max="book.availability" required>
+								<br>
+								<br>
+								<input type="submit" class="btn btn-primary" value="Add to cart" >
+							</form>
+						</span>
+						<span v-if="book.availability == 0">
+							<h4>This book is unavailable to purchase for the moment</h4>
+						</span>
+						<br>
+						<br>
+					</div>
 				</div>
+				<br>
+				<br>
 			</div>
-			<br>
-			<br>
 		</div>
 		
 		<br>
@@ -149,7 +153,7 @@
 		background-color: white;
 		color: black;
 		text-align: center;
-		width:210px;
+		width:280px;
 		margin: auto;
 		border-radius:25px;
 		box-shadow:1px 1px 1px white;
@@ -158,7 +162,7 @@
 	.languagesBooksRow2{
 		background-color: white;
 		padding: 20px;
-		margin: auto;
+		margin: 15px;
 		width:600px;
 		text-align: center;
 	}
@@ -171,16 +175,24 @@
 	
 	.languagesBooksRow2 img{
 		width: 200px;
+		height:330px;
 	}
 	
 	.languagesBooksRow{
 		background-color: white;
 		color: black;
 		text-align: center;
-		width:600px;
+		width:590px;
 		margin: auto;
 		border-radius:25px;
 		box-shadow:1px 1px 1px white;
+	}
+	
+	.languagesBooksRow3{
+		margin:auto;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
 	}
 	
 	.footer{

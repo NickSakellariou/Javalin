@@ -59,11 +59,40 @@
 		</nav>
 		<br>
 		<br>
-		<br>
 		<div class="contactRow1">
-			<div class="contactRow2">
-				<h4>For any questions you can send an e-mail at : <b>nicksak10@gmail.com</b></h4>
-			</div>
+			<h2>Contact form</h2>
+		</div>
+		<div class="contactRow2">
+			<h2>Enter your personal information</h2>
+			<form name="myform" action="/add-contact-form" method="post">
+				<hr>
+				<div class="form-group">
+				  <label for="name">Name:</label>
+				  <input type="text" class="form-control" pattern="[a-zA-Z]{1,}" title="Must contain only letters" id="name" name="name" required>
+				</div>
+				<div class="form-group">
+				  <label for="surname">Surname:</label>
+				  <input type="text" class="form-control" pattern="[a-zA-Z]{1,}" title="Must contain only letters" id="surname" name="surname"  required>
+				</div>
+				<div class="form-group">
+				  <label for="email">E-mail:</label>
+				  <input type="email" class="form-control" pattern="[[a-zA-Z]0-9._%+-]+@[[a-zA-Z]0-9.-]+\.[[a-zA-Z]]{2,}$" title="characters followed by an @ sign, followed by more characters, and then a '.',followed by at least 2 letters from a to z" id="email" name="email" required>
+				</div>
+				<div class="form-group">
+				  <label for="phone">Phone:</label>
+				  <input type="text" class="form-control" pattern="[0-9]{10}" title="Must contain 10 numbers"  id="phone" name="phone"  required>
+				</div>
+				<br>
+				<br>
+				<h2>Enter your message</h2>
+				<hr>
+				<textarea class="form-control" maxlength="200" rows="4" cols="72" name="message" required></textarea>
+				<br>
+				<br>
+				<div style="text-align:center;">
+					<input type="submit" class="btn btn-primary" value="Submit form">
+				</div>
+			</form>
 		</div>
 		<br>
 		<br>
@@ -96,29 +125,39 @@
 </script>
 
 <style>
+	hr {
+	  border: 1px solid #f1f1f1;
+	  margin-bottom: 25px;
+	}
 	.contactRow1{
-		text-align:center;
+		background-color: white;
+		color: black;
+		text-align: center;
+		width:200px;
+		margin: auto;
+		border-radius:25px;
+		box-shadow:1px 1px 1px white;
+	}
+	.contactRow2{
 		padding: 16px;
 		color:black;
 		margin: auto;
-		width:800px;
-		background-color: #339966;
+		width:650px;
+		background-color: #006699;
 		border-radius:25px;
 		box-shadow:0px 3px 12px white;
+		position:relative;
+		top:25px;
 	}
-	.contactRow2{
-		text-align: left;
+	
+	.contactRow2 form{
 		font-weight: bold;
 	}
 	
 	.contactFooter{
-		position: fixed;
-		left: 0;
-		bottom: 0;
-		width: 100%;
 		background-color: black;
 		padding: 30px;
-		color: white;
 		text-align: center;
+		color:white;
 	}
 </style>

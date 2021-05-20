@@ -215,7 +215,7 @@
 	
 	.adminStatisticsRow2{
 		background-color: white;
-		padding: 20px;
+		padding: 15px;
 		margin: auto;
 		width:750px;
 	}
